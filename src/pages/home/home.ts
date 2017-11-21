@@ -6,6 +6,7 @@ import { Promotion } from '../../shared/promotion';
 import { PromotionProvider } from '../../providers/promotion/promotion';
 import { Leader } from '../../shared/leader';
 import { LeaderProvider } from '../../providers/leader/leader';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'

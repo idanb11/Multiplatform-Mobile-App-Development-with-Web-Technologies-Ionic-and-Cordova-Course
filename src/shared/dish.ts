@@ -9,5 +9,5 @@ export interface Dish {
   price: string;
   featured: boolean;
   description: string;
-  commnets: Comment[];
+  comments: Comment[];
 }
