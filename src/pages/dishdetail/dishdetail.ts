@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Comment } from './../../shared/comment';
-import { Dish } from './../../shared/dish';
+import { Component, Inject } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { Comment } from "./../../shared/comment";
+import { Dish } from "./../../shared/dish";
+import { FavoriteProvider } from "./../../providers/favorite/favorite";
 
 /**
  * Generated class for the DishdetailPage page.
@@ -11,26 +12,37 @@ import { Dish } from './../../shared/dish';
  */
 @IonicPage()
 @Component({
-  selector: 'page-dishdetail',
-  templateUrl: 'dishdetail.html',
+  selector: "page-dishdetail",
+  templateUrl: "dishdetail.html"
 })
 export class DishdetailPage {
   dish: Dish;
   errMess: string;
   avgstars: string;
   numcomments: number;
+  favorite: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    @Inject('BaseURL') private BaseURL) {
-      this.dish = navParams.get('dish');
-      this.numcomments = this.dish.comments.length;
-      let total = 0;
-      this.dish.comments.forEach(comment => total += comment.rating);
-      this.avgstars = (total / this.numcomments).toFixed(2);
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    @Inject("BaseURL") private BaseURL,
+    private favoriteservice: FavoriteProvider
+  ) {
+    this.dish = navParams.get("dish");
+    this.favorite = favoriteservice.isFavorite(this.dish.id);
+    this.numcomments = this.dish.comments.length;
+
+    let total = 0;
+    this.dish.comments.forEach(comment => (total += comment.rating));
+    this.avgstars = (total / this.numcomments).toFixed(2);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DishdetailPage');
+    console.log("ionViewDidLoad DishdetailPage");
   }
 
+  public addToFavorites() {
+    console.log("Adding to Favorites", this.dish.id);
+    this.favorite = this.favoriteservice.addFavorite(this.dish.id);
+  }
 }
